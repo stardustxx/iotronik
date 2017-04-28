@@ -1,0 +1,8 @@
+<resources>
+  <string name="app_name">IOtroniks</string>
+
+  <!--Incident List-->
+  <string name="incident_list_item_date">Date</string>
+  <string name="incident_list_item_title">Title</string>
+  <string name="incident_time_pattern" translatable="false">MM/dd yyyy hh:mm a</string>
+</resources>

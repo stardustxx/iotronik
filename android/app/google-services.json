@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "512273627061",
+    "firebase_url": "https://iotroniks.firebaseio.com",
+    "project_id": "iotroniks",
+    "storage_bucket": "iotroniks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512273627061:android:5e300ce85b946fe5",
+        "android_client_info": {
+          "package_name": "com.sdust.iotroniks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "512273627061-pcp07t4rfvi0851viqff8k26palugfds.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sdust.iotroniks",
+            "certificate_hash": "da329842368021a8406a4ecac6483670c9d184d1"
+          }
+        },
+        {
+          "client_id": "512273627061-enqoejpc6vcouv3pbaac9sdid8m7gmas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ3l1RW10p33UjWMJcXsyTr6eL8wovKVk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "512273627061-enqoejpc6vcouv3pbaac9sdid8m7gmas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
