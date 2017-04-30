@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
+    "firebase": "^3.9.0",
     "firebase-admin": "^4.2.1",
     "raspicam": "^0.2.13"
   }
