@@ -1,4 +1,4 @@
-package com.sdust.iotroniks;
+package com.sdust.iotroniks.ui.main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,17 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sdust.iotroniks.data.Incident;
+import com.sdust.iotroniks.R;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-class IncidentRecyclerViewAdapter extends RecyclerView.Adapter<IncidentRecyclerViewAdapter.IncidentViewHolder> {
+public class IncidentRecyclerViewAdapter extends RecyclerView.Adapter<IncidentRecyclerViewAdapter.IncidentViewHolder> {
 
   private Context context;
   private ArrayList<Incident> incidentList;
 
-  IncidentRecyclerViewAdapter(Context context, ArrayList<Incident> incidentList) {
+  public IncidentRecyclerViewAdapter(Context context, ArrayList<Incident> incidentList) {
     this.context = context;
     this.incidentList = incidentList;
   }

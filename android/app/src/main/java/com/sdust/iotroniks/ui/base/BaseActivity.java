@@ -1,4 +1,4 @@
-package com.sdust.iotroniks;
+package com.sdust.iotroniks.ui.base;
 
 import android.support.v7.app.AppCompatActivity;
 

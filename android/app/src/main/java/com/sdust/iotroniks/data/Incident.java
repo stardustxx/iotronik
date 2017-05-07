@@ -1,4 +1,4 @@
-package com.sdust.iotroniks;
+package com.sdust.iotroniks.data;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ServerValue;
