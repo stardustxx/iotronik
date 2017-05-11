@@ -6,14 +6,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.sdust.iotroniks.R;
 import com.sdust.iotroniks.data.AppDataManagerHelper;
 import com.sdust.iotroniks.data.Incident;
-import com.sdust.iotroniks.R;
-import com.sdust.iotroniks.data.prefs.AppPreferenceHelper;
 import com.sdust.iotroniks.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
@@ -24,7 +25,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
   private IncidentRecyclerViewAdapter incidentRecyclerViewAdapter;
   private ArrayList<Incident> incidentList;
 
-  private RecyclerView listIncident;
+  @BindView(R.id.main_list_incident)
+  RecyclerView listIncident;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,6 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     setContentView(R.layout.activity_main);
 
     mainPresenter = new MainPresenter(new AppDataManagerHelper(getApplicationContext()), this);
-    listIncident = (RecyclerView) findViewById(R.id.main_list_incident);
     incidentList = new ArrayList<>();
 
     // Setting the list for showing incidents
