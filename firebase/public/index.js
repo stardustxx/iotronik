@@ -6,9 +6,13 @@ fileForm.onsubmit = (event) => {
 
   let file = btnFileSelect.files[0];
   
-  console.log("File", file);
+  if (file) {
+    console.log("File", file);
 
-  uploadImage(file);
+    uploadImage(file);
+  } else {
+    console.log("Please select a file to upload");
+  }
 
 }
 
@@ -18,12 +22,13 @@ const uploadImage = (file) => {
 
   let init = { 
     method: 'POST',
-    mode: 'no-cors',
     cache: 'default',
     body: formData
   };
 
-  fetch("http://localhost:3000/test-image", init).then(response => {
-    console.log(response);
-  })
+  fetch("http://localhost:3000/test-image", init).then((response) => {
+    return response.json();
+  }).then((result) => {
+    console.log(result);
+  });
 }

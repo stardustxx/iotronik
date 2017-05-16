@@ -1,9 +1,9 @@
 [debug] ----------------------------------------------------------------------
 [debug] Command:      /usr/local/Cellar/node/7.10.0/bin/node /usr/local/bin/firebase serve
-[debug] CLI Version:  3.7.0
+[debug] CLI Version:  3.8.0
 [debug] Platform:     darwin
 [debug] Node Version: v7.10.0
-[debug] Time:         Wed May 10 2017 11:19:10 GMT-0700 (PDT)
+[debug] Time:         Tue May 16 2017 15:28:03 GMT-0700 (PDT)
 [debug] ----------------------------------------------------------------------
 [debug] 
 [debug] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
@@ -13,23 +13,23 @@
   client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
   grant_type: 'refresh_token',
   scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
- Wed May 10 2017 11:19:10 GMT-0700 (PDT)
+ Tue May 16 2017 15:28:03 GMT-0700 (PDT)
 [debug] <<< HTTP RESPONSE 200
 [debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/iotroniks  
- Wed May 10 2017 11:19:10 GMT-0700 (PDT)
+ Tue May 16 2017 15:28:03 GMT-0700 (PDT)
 [debug] <<< HTTP RESPONSE 200
 [debug] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/iotroniks/tokens  
- Wed May 10 2017 11:19:11 GMT-0700 (PDT)
+ Tue May 16 2017 15:28:04 GMT-0700 (PDT)
 [debug] <<< HTTP RESPONSE 200
-[info] Starting Firebase development server...
 [info] 
-[info] Project Directory: /Users/ericlee/Documents/Projects/iotronik/firebase
+[info] === Serving from '/Users/ericlee/Documents/Projects/iotronik/firebase'...
+[info] 
 [debug] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/iotroniks  
- Wed May 10 2017 11:19:12 GMT-0700 (PDT)
+ Tue May 16 2017 15:28:04 GMT-0700 (PDT)
 [debug] <<< HTTP RESPONSE 200
 [debug] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/512273627061/clients/_:getWebAppConfig  
- Wed May 10 2017 11:19:13 GMT-0700 (PDT)
+ Tue May 16 2017 15:28:05 GMT-0700 (PDT)
 [debug] <<< HTTP RESPONSE 200
-[info] Public Directory: public
-[info] 
-[info] Server listening at: http://localhost:5000
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+

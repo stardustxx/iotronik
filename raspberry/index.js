@@ -5,6 +5,7 @@ const RaspiCam = require('raspicam');
 const firebase = require('firebase');
 const googleStorage = require('@google-cloud/storage');
 const Multer = require('multer');
+const cors = require('cors');
 
 let cameraOptions = {
   mode: 'photo',
@@ -45,42 +46,41 @@ let firebaseLogInData = {
 let firebaseDatabase, firebaseStorage;
 let logInInterval;
 
+/**
+ * Allow CORS with Express server
+ */
+app.use(cors());
+
 app.get('/', (req, res) => {
   console.log('Getting Root');
   res.send('Server is running');
 });
 
-app.post('/occurrence', (req, res) => {
+app.post('/occurrence', multer.single('file'), (req, res) => {
   console.log('Posting Occurrence');
   console.log(req);
+
+  let file = req.file;
+  if (file) {
+    uploadImageToStorage(file).then((success) => {
+      res.status(200).send({
+        status: 'success'
+      });
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
 });
 
 app.post('/test-image', multer.single('file'), (req, res) => {
   let file = req.file;
-  let newFileName = `${file.originalname}_${Date.now()}`;
-
-  let fileUpload = bucket.file(newFileName);
-
-  const blobStream = fileUpload.createWriteStream({
-    metadata: {
-      contentType: file.mimetype
-    }
-  });
-
-  blobStream.on('error', (error) => {
-    next(error);
-    return;
-  });
-
-  blobStream.on('finish', () => {
-    // The public URL can be used to directly access the file via HTTP.
-    const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
+  uploadImageToStorage(file).then((success) => {
     res.status(200).send({
       status: 'success'
     });
+  }).catch((error) => {
+    console.error(error);
   });
-
-  blobStream.end(file.buffer);
 });
 
 app.listen(3000, () => {
@@ -133,6 +133,36 @@ const addOccurrence = () => {
       image: "Image"
     });
   }
+}
+
+const uploadImageToStorage = (file) => {
+  let prom = new Promise((resolve, reject) => {
+    if (!file) {
+      reject('No image file');
+    }
+    let newFileName = `${file.originalname}_${Date.now()}`;
+
+    let fileUpload = bucket.file(newFileName);
+
+    const blobStream = fileUpload.createWriteStream({
+      metadata: {
+        contentType: file.mimetype
+      }
+    });
+
+    blobStream.on('error', (error) => {
+      reject('Something is wrong! Unable to upload at the moment.');
+    });
+
+    blobStream.on('finish', () => {
+      // The public URL can be used to directly access the file via HTTP.
+      const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
+      resolve();
+    });
+
+    blobStream.end(file.buffer);
+  });
+  return prom;
 }
 
 camera.on('start', () => {
