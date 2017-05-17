@@ -9,16 +9,17 @@ fileForm.onsubmit = (event) => {
   if (file) {
     console.log("File", file);
 
-    uploadImage(file);
+    submitData(file);
   } else {
     console.log("Please select a file to upload");
   }
 
 }
 
-const uploadImage = (file) => {
+const submitData = (file) => {
   let formData = new FormData();
   formData.append('file', file);
+  formData.append('name', `time_${Date.now()}`);
 
   let init = { 
     method: 'POST',
@@ -26,7 +27,7 @@ const uploadImage = (file) => {
     body: formData
   };
 
-  fetch("http://localhost:3000/test-image", init).then((response) => {
+  fetch("http://localhost:3000/occurrence", init).then((response) => {
     return response.json();
   }).then((result) => {
     console.log(result);

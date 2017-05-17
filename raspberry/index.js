@@ -51,18 +51,30 @@ let logInInterval;
  */
 app.use(cors());
 
+/**
+ * Root path
+ */
 app.get('/', (req, res) => {
   console.log('Getting Root');
   res.send('Server is running');
 });
 
+/**
+ * Adding new occurrence of incident
+ */
 app.post('/occurrence', multer.single('file'), (req, res) => {
   console.log('Posting Occurrence');
-  console.log(req);
+  console.log(req.body);
 
   let file = req.file;
   if (file) {
     uploadImageToStorage(file).then((success) => {
+      const dateNow = Date.now();
+      firebaseDatabase.ref(`occurrence/time_${dateNow}`).set({
+        time: dateNow,
+        image: success,
+        name: `Time_${dateNow}`
+      });
       res.status(200).send({
         status: 'success'
       });
@@ -109,7 +121,7 @@ const firebaseLogIn = (toClear) => {
       clearFirebaseLogInInterval();
     } else {
       // Testing code
-      addOccurrence();
+      // addOccurrence();
     }
   }).catch((error) => {
     console.error("Logged in error code", error.code);
@@ -156,8 +168,8 @@ const uploadImageToStorage = (file) => {
 
     blobStream.on('finish', () => {
       // The public URL can be used to directly access the file via HTTP.
-      const publicUrl = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
-      resolve();
+      const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
+      resolve(url);
     });
 
     blobStream.end(file.buffer);
