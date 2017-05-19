@@ -70,10 +70,9 @@ app.post('/occurrence', multer.single('file'), (req, res) => {
   if (file) {
     uploadImageToStorage(file).then((success) => {
       const dateNow = Date.now();
-      firebaseDatabase.ref(`occurrence/time_${dateNow}`).set({
+      firebaseDatabase.ref('occurrence').push().set({
         time: dateNow,
-        image: success,
-        name: `Time_${dateNow}`
+        image: success
       });
       res.status(200).send({
         status: 'success'
