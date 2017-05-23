@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const format = require('util').format;
 const RaspiCam = require('raspicam');
 const firebase = require('firebase');
@@ -43,7 +45,7 @@ let firebaseLogInData = {
   isLoggedIn: false
 };
 
-let firebaseDatabase, firebaseStorage;
+let firebaseDatabase, firebaseAuth;
 let logInInterval;
 
 /**
@@ -64,7 +66,7 @@ app.get('/', (req, res) => {
  */
 app.post('/occurrence', multer.single('file'), (req, res) => {
   console.log('Posting Occurrence');
-  console.log(req.body);
+  console.log('occurrence', req.body);
 
   let file = req.file;
   if (file) {
@@ -83,30 +85,21 @@ app.post('/occurrence', multer.single('file'), (req, res) => {
   }
 });
 
-app.post('/test-image', multer.single('file'), (req, res) => {
-  let file = req.file;
-  uploadImageToStorage(file).then((success) => {
-    res.status(200).send({
-      status: 'success'
-    });
-  }).catch((error) => {
-    console.error(error);
-  });
-});
-
 app.listen(3000, () => {
   console.log('App listening to port 3000');
   // camera.start();
 
   // Initializes Firebase
   firebase.initializeApp(firebaseConfig);
+  firebaseAuth = firebase.auth();
   // Firebase log in
   firebaseLogIn(false);
   logInInterval = setInterval(() => {
-    firebaseLogIn(true);
+    if (!firebaseAuth.currentUser) {
+      firebaseLogIn(true);
+    }
   }, 10000);
   firebaseDatabase = firebase.database();
-  // firebaseStorage = firebase.storage();
 });
 
 /**
@@ -114,7 +107,7 @@ app.listen(3000, () => {
  * @param {boolean} toClear if true then it will run clear interval function
  */
 const firebaseLogIn = (toClear) => {
-  firebase.auth().signInWithEmailAndPassword(firebaseLogInData.email, firebaseLogInData.password).then((success) => {
+  firebaseAuth.signInWithEmailAndPassword(firebaseLogInData.email, firebaseLogInData.password).then((success) => {
     console.log("Logged in successfully");
     if (toClear) {
       clearFirebaseLogInInterval();
@@ -137,15 +130,10 @@ const clearFirebaseLogInInterval = () => {
   }
 }
 
-const addOccurrence = () => {
-  if (firebaseDatabase) {
-    firebaseDatabase.ref('occurrence/test').set({
-      time: "Time",
-      image: "Image"
-    });
-  }
-}
-
+/**
+ * Upload the image file to Google Storage
+ * @param {File} file object that will be uploaded to Google Storage
+ */
 const uploadImageToStorage = (file) => {
   let prom = new Promise((resolve, reject) => {
     if (!file) {
@@ -175,6 +163,10 @@ const uploadImageToStorage = (file) => {
   });
   return prom;
 }
+
+io.on('connection', (socket) => {
+  console.log('A device is connected');
+});
 
 camera.on('start', () => {
   console.log('Camera started');
