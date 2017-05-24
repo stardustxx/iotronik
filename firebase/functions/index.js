@@ -1,4 +1,7 @@
-var functions = require('firebase-functions');
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+
+const topicPathNewIncident = 'incident-new';
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -8,17 +11,22 @@ var functions = require('firebase-functions');
 // });
 
 exports.addIncident = functions.database.ref('/occurrence/{occurrenceId}').onWrite((event) => {
+  admin.initializeApp(functions.config().firebase);
   const originalValue = event.data.val();
   console.log("originalValue", originalValue);
-  const incidentRef = event.data.adminRef.root.child('incident');
+  const incidentRef = admin.database().ref('incident');
   const requiredTimeElapsed = 1000 * 60 * 5;
   
   // incidentRef.push().set(originalValue);
   incidentRef.orderByChild('time').limitToLast(1).once('value').then((snapshot) => {
     if (snapshot.val()) {
+      // Incident reference list is not empty
       console.log("Snapshot exists: true");
+      // Looping through the snapshot iterables, but there should only be 1 due to earlier filtering
       snapshot.forEach((childSnapShot) => {
         console.log("childSnapShot", childSnapShot.val());
+        // Checking if the occurrence time and incident time is smaller than pre-set time interval
+        // If so then add this occurrence to that incident
         if (originalValue.time - childSnapShot.val().time < requiredTimeElapsed) {
           console.log("Within time: true");
           incidentRef.child(childSnapShot.key).child('data').push().set({
@@ -30,6 +38,7 @@ exports.addIncident = functions.database.ref('/occurrence/{occurrenceId}').onWri
         }
       });
     } else {
+      // Incident reference list is empty, then just add new incident
       console.log("Snapshot exists: false");
       addNewIncident(incidentRef, originalValue);
     }
@@ -52,5 +61,14 @@ function addNewIncident(reference, originalValue) {
     time: originalValue.time
   }).then((success) => {
     newIncidentRef.child("data").push().set(originalValue);
+    sendNotification();
   });
+}
+
+/**
+ * Send a push notification
+ * 
+ */
+function sendNotification() {
+  admin.messaging().sendToTopic(topicPathNewIncident);
 }
