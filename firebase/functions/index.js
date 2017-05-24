@@ -70,5 +70,17 @@ function addNewIncident(reference, originalValue) {
  * 
  */
 function sendNotification() {
-  admin.messaging().sendToTopic(topicPathNewIncident);
+  const payload = {
+    data: {
+      "title": "Iotronik"
+    },
+    "notification": {
+      "title": "Iotroink"
+    }
+  }
+  admin.messaging().sendToTopic(topicPathNewIncident, payload).then((response) => {
+    console.log("Successfully sent message:", response);
+  }).catch((error) => {
+    console.error("Error sending message:", error);
+  });
 }
