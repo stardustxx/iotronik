@@ -10,41 +10,47 @@ const topicPathNewIncident = 'incident-new';
 //  response.send("Hello from Firebase!");
 // });
 
+admin.initializeApp(functions.config().firebase);
+
+// Add new incident when new occureence is added
 exports.addIncident = functions.database.ref('/occurrence/{occurrenceId}').onWrite((event) => {
-  admin.initializeApp(functions.config().firebase);
   const originalValue = event.data.val();
   console.log("originalValue", originalValue);
   const incidentRef = admin.database().ref('incident');
   const requiredTimeElapsed = 1000 * 60 * 5;
   
-  // incidentRef.push().set(originalValue);
-  incidentRef.orderByChild('time').limitToLast(1).once('value').then((snapshot) => {
-    if (snapshot.val()) {
-      // Incident reference list is not empty
-      console.log("Snapshot exists: true");
-      // Looping through the snapshot iterables, but there should only be 1 due to earlier filtering
-      snapshot.forEach((childSnapShot) => {
-        console.log("childSnapShot", childSnapShot.val());
-        // Checking if the occurrence time and incident time is smaller than pre-set time interval
-        // If so then add this occurrence to that incident
-        if (originalValue.time - childSnapShot.val().time < requiredTimeElapsed) {
-          console.log("Within time: true");
-          incidentRef.child(childSnapShot.key).child('data').push().set({
-            image: originalValue.image
-          });
-        } else {
-          console.log("Within time: false");
-          addNewIncident(incidentRef, originalValue);
-        }
-      });
-    } else {
-      // Incident reference list is empty, then just add new incident
-      console.log("Snapshot exists: false");
-      addNewIncident(incidentRef, originalValue);
-    }
-  }).catch((error) => {
-    console.error("Incident Ref", error);
-  });
+  if (originalValue) {
+    // incidentRef.push().set(originalValue);
+    incidentRef.orderByChild('time').limitToLast(1).once('value').then((snapshot) => {
+      if (snapshot.val()) {
+        // Incident reference list is not empty
+        console.log("Snapshot exists: true");
+        // Looping through the snapshot iterables, but there should only be 1 due to earlier filtering
+        snapshot.forEach((childSnapShot) => {
+          console.log("childSnapShot", childSnapShot.val());
+          // Checking if the occurrence time and incident time is smaller than pre-set time interval
+          // If so then add this occurrence to that incident
+          if (originalValue.time - childSnapShot.val().time < requiredTimeElapsed) {
+            console.log("Within time: true");
+            incidentRef.child(childSnapShot.key).child('data').push().set({
+              image: originalValue.image
+            });
+          } else {
+            console.log("Within time: false");
+            addNewIncident(incidentRef, originalValue);
+          }
+        });
+      } else {
+        // Incident reference list is empty, then just add new incident
+        console.log("Snapshot exists: false");
+        addNewIncident(incidentRef, originalValue);
+      }
+    }).catch((error) => {
+      console.error("Incident Ref", error);
+    });
+  } else {
+    console.log("Occurrence value does not exist");
+  }
 });
 
 /**
@@ -64,6 +70,25 @@ function addNewIncident(reference, originalValue) {
     sendNotification();
   });
 }
+
+// Add new occurrence when a new image is created
+exports.addOccurrence = functions.storage.object().onChange(event => {
+  const object = event.data;
+  const filePath = object.name;
+  const contentType = object.contentType;
+  const resourceState = object.resourceState;
+  const metageneration = object.metageneration;
+
+  if (resourceState === 'exists' && metageneration && contentType.startsWith('image/')) {
+    const occurrenceRef = admin.database().ref('occurrence');
+    const dateNow = Date.now();
+    return occurrenceRef.push().set({
+      time: dateNow,
+      image: filePath
+    });
+  }
+
+});
 
 /**
  * Send a push notification

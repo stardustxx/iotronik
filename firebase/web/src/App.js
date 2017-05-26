@@ -1,14 +1,24 @@
 import React, {Component} from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import {BrowserRouter, Switch, Route, Link} from 'react-router-dom'; 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import TestUpload from './test-upload.component/test-upload.component';
+import TestUpload from './modules/test-upload/test-upload';
 import * as firebase from 'firebase';
 import Constants from './Constants';
+
+// Importing pages
+import IncidentsPage from './pages/incidents-page/incidents-page';
+import ActivityPage from './pages/activity-page/activity-page';
 
 class App extends Component {
 
   config = null;
+
+  firebaseAuthData = {
+    'email': 'iotronik-web@gmail.com',
+    'password': 'iotronik'
+  };
 
   constructor() {
     super();
@@ -27,12 +37,24 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.setUpFirebaseAuth();
+    this.setUpFirebaseMessaging();
+  }
+
+  setUpFirebaseAuth = () => {
+    const firebaseAuth = firebase.auth();
+    firebaseAuth.signInWithEmailAndPassword(this.firebaseAuthData.email, this.firebaseAuthData.password).catch((error) => {
+      console.error("Auth error code.", error.code);
+      console.error("Auth error message.", error.message);
+    });
+  }
+
+  setUpFirebaseMessaging = () => {
     const firebaseMessaging = firebase.messaging();
     firebaseMessaging
       .requestPermission()
       .then(() => {
         console.log('Notification permission granted.');
-        // TODO(developer): Retrieve an Instance ID token for use with FCM. ...
         return firebaseMessaging.getToken();
       })
       .then((token) => {
@@ -64,7 +86,7 @@ class App extends Component {
     fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topicName}`, init).then((response) => {
       return response;
     }).then((result) => {
-      console.log(result);
+      // console.log(result);
     });
   }
 
@@ -72,9 +94,17 @@ class App extends Component {
     return (
       <div>
         <MuiThemeProvider>
-          <AppBar title='IOTronik'/>
+          <div>
+            <AppBar title='IOTronik'/>
+            <TestUpload/>
+            <BrowserRouter>
+              <Switch>
+                <Route exact path='/' component={IncidentsPage}/>
+                <Route exact path='/activity' component={ActivityPage}/>
+              </Switch>
+            </BrowserRouter>
+          </div>
         </MuiThemeProvider>
-        <TestUpload/>
       </div>
     );
   }
