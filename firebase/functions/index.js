@@ -15,6 +15,7 @@ admin.initializeApp(functions.config().firebase);
 // Add new incident when new occureence is added
 exports.addIncident = functions.database.ref('/occurrence/{occurrenceId}').onWrite((event) => {
   const originalValue = event.data.val();
+  console.log('Adding new incident');
   console.log("originalValue", originalValue);
   const incidentRef = admin.database().ref('incident');
   const requiredTimeElapsed = 1000 * 60 * 5;
@@ -73,16 +74,17 @@ function addNewIncident(reference, originalValue) {
 
 // Add new occurrence when a new image is created
 exports.addOccurrence = functions.storage.object().onChange(event => {
+  console.log('Adding new occurrence');
   const object = event.data;
   const filePath = object.name;
   const contentType = object.contentType;
   const resourceState = object.resourceState;
   const metageneration = object.metageneration;
 
-  if (resourceState === 'exists' && metageneration && contentType.startsWith('image/')) {
+  if (resourceState === 'exists' && metageneration == 1 && contentType.startsWith('image/')) {
     const occurrenceRef = admin.database().ref('occurrence');
     const dateNow = Date.now();
-    return occurrenceRef.push().set({
+    occurrenceRef.push().set({
       time: dateNow,
       image: filePath
     });

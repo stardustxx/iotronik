@@ -3,13 +3,15 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import {BrowserRouter, Switch, Route, Link} from 'react-router-dom'; 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import TestUpload from './modules/test-upload/test-upload';
 import * as firebase from 'firebase';
 import Constants from './Constants';
 
 // Importing pages
 import IncidentsPage from './pages/incidents-page/incidents-page';
 import ActivityPage from './pages/activity-page/activity-page';
+
+// Importing modules
+import TestUpload from './modules/test-upload/test-upload';
 
 class App extends Component {
 
@@ -96,7 +98,7 @@ class App extends Component {
         <MuiThemeProvider>
           <div>
             <AppBar title='IOTronik'/>
-            <TestUpload/>
+            <TestUpload />
             <BrowserRouter>
               <Switch>
                 <Route exact path='/' component={IncidentsPage}/>

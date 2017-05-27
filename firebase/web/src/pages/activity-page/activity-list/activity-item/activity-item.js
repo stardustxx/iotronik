@@ -13,15 +13,15 @@ class ActivityItem extends Component {
   imageStyle = {
     "height": "100%",
     "width": "100%",
-    "maxHeight": "250px",
-    "maxWidth": "250px"
+    "maxHeight": "450px",
+    "maxWidth": "450px"
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      image: ''
+      image: null
     };
 
     const firebaseStorage = firebase.storage();
