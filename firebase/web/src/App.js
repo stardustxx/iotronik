@@ -96,7 +96,7 @@ class App extends Component {
     return (
       <div>
         <MuiThemeProvider>
-          <div>
+          <div id="main-body">
             <AppBar title='IOTronik'/>
             <TestUpload />
             <BrowserRouter>
