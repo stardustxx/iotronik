@@ -7,9 +7,37 @@ class SideNav extends Component {
   constructor(props) {
     super(props);
 
-    if (this.props.hasOwnProperty("open")) {
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.checkWindowSize();
+    window.addEventListener('resize', this.windowResizeCallback);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.windowResizeCallback);
+  }
+
+  windowResizeCallback = () => {
+    this.checkWindowSize();
+  }
+
+  checkWindowSize = () => {
+    if (!this.state.hasOwnProperty('open')) {
+      this.initializeState();
+    }
+    if (this.isMobile()) {
+      this.toggleSideNav(false);
+    } else {
+      this.toggleSideNav(true);
+    }
+  }
+
+  initializeState = () => {
+    if (this.isMobile()) {
       this.state = {
-        open: this.props.open
+        open: false
       };
     } else {
       this.state = {
@@ -18,18 +46,8 @@ class SideNav extends Component {
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', (event) => {
-      if (window.innerWidth < 768) {
-        this.toggleSideNav(false);
-      } else {
-        this.toggleSideNav(true);
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize');
+  isMobile = () => {
+    return window.innerWidth < 768;
   }
 
   toggleSideNav = (open) => {
@@ -38,12 +56,20 @@ class SideNav extends Component {
     });
   }
 
+  onMenuItemClicked = (pathName) => {
+    this.props.history.push(pathName);
+  }
+
   render() {
     return (
       <div>
         <Drawer open={this.state.open}>
-          <MenuItem>Incidents</MenuItem>
-          <MenuItem>Activities</MenuItem>
+          <MenuItem onClick={() => {
+            this.onMenuItemClicked('/');
+          }}>Incidents</MenuItem>
+          <MenuItem onClick={() => {
+            this.onMenuItemClicked('/activity');
+          }}>Activities</MenuItem>
         </Drawer>
       </div>
     );

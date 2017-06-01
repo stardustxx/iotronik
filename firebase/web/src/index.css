@@ -1,8 +1,19 @@
 body {
   margin-top: 0px;
   margin-right: 0px;
-  margin-left: 260px;
   margin-bottom: 60px;
   padding: 0;
   font-family: sans-serif;
+}
+
+@media (max-width: 767px) {
+  body {
+    margin-left: 0px;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    margin-left: 260px;
+  }
 }

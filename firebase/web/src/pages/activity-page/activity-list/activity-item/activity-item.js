@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import {ListItem} from 'material-ui/List';
+import {GridTile} from 'material-ui/GridList';
 import * as firebase from 'firebase';
 // import './activity.item.css';
 
-/*
-  Properties:
-  date (String):  Time of occurrence
-  image (String): Name of the occurrence image in Firebase Storage bucket
-*/
+
 class ActivityItem extends Component {
 
   imageStyle = {
@@ -23,24 +19,28 @@ class ActivityItem extends Component {
     this.state = {
       image: null
     };
+  }
 
+  componentDidMount() {
     const firebaseStorage = firebase.storage();
-    firebaseStorage.ref(this.props.image).getDownloadURL().then(url => {
+    firebaseStorage.refFromURL(`gs://iotroniks.appspot.com/${this.props.image}`).getDownloadURL().then(url => {
       this.setState({
         image: url
       });
+    }).catch(error => {
+      console.error("Firebase storage error code", error.code);
+      console.error("Firebase storage error message", error.message);
     });
   }
 
   render() {
     return (
       <div>
-        <ListItem
-          primaryText={this.props.date}
-          secondaryText={
-            <img className="activity-item-image" src={this.state.image} alt="" style={this.imageStyle} />
-          }
-        />
+        <GridTile
+          title={this.props.date}
+        >
+          <img src={this.state.image} style={this.imageStyle} />
+        </GridTile>
       </div>
     );
   }

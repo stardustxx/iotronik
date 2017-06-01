@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import IncidentList from './incident-list/incident-list';
 import BottomNav from '../../modules/bottom-nav/bottom-nav';
+import SideNav from '../../modules/side-nav/side-nav';
+
+import './incidents-page.css';
 
 class IncidentsPage extends Component {
 
@@ -9,12 +12,13 @@ class IncidentsPage extends Component {
   }
 
   comopnentDidLoad() {
-    console.log("Incidents page did load");
+    
   }
 
   render() {
     return (
-      <div>
+      <div id='incidents-page'>
+        <SideNav history={this.props.history} />
         <IncidentList></IncidentList>
         <BottomNav history={this.props.history} />
       </div>

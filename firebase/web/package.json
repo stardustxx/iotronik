@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^4.0.0",
+    "firebase": "^4.1.1",
     "material-ui": "^0.18.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -11,12 +11,14 @@
     "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
+    "flow-bin": "^0.47.0",
     "react-scripts": "1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build; rm -r ../public; cp -r ./build/ ../public",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   }
 }

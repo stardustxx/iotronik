@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List} from 'material-ui/List';
+import {GridList} from 'material-ui/GridList';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 import * as firebase from 'firebase';
@@ -7,6 +7,14 @@ import * as firebase from 'firebase';
 import ActivityItem from './activity-item/activity-item';
 
 class ActivityList extends Component {
+
+  styles = {
+    gridList: {
+      width: 500,
+      height: 450,
+      overflowY: 'auto'
+    }
+  }
 
   constructor() {
     super();
@@ -38,7 +46,10 @@ class ActivityList extends Component {
   render() {
     return (
       <div>
-        <List>
+        <GridList
+          cellHeight={200}
+          style={this.styles.gridList}
+        >
           <Subheader>Incident List</Subheader>
           {
             this.state.occurrenceList.reverse().map((value, index, array) => {
@@ -50,7 +61,7 @@ class ActivityList extends Component {
               )
             })
           }
-        </List>
+        </GridList>
       </div>
     );
   }

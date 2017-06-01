@@ -4,3 +4,15 @@
   width: 100%;
   z-index: 10;
 }
+
+@media (max-width: 767px) {
+  #bottom-nav {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  #bottom-nav {
+    display: none;
+  }
+}

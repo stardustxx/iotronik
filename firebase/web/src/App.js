@@ -97,7 +97,10 @@ class App extends Component {
       <div>
         <MuiThemeProvider>
           <div id="main-body">
-            <AppBar title='IOTronik'/>
+            <AppBar 
+              title='IOTronik'
+              iconStyleLeft={{display: 'none'}}
+            />
             <TestUpload />
             <BrowserRouter>
               <Switch>

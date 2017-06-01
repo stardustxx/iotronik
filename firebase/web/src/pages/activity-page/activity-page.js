@@ -8,24 +8,12 @@ class ActivityPage extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      open: true
-    };
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        open: false
-      });
-    }, 2000);
   }
 
   render() {
     return (
       <div id='activity-page'>
-        <SideNav open={this.state.open} />
+        <SideNav history={this.props.history} />
         <ActivityList />
         <BottomNav history={this.props.history} />
       </div>
