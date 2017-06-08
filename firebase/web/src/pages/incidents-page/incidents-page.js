@@ -7,14 +7,6 @@ import './incidents-page.css';
 
 class IncidentsPage extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  comopnentDidLoad() {
-    
-  }
-
   render() {
     return (
       <div id='incidents-page'>

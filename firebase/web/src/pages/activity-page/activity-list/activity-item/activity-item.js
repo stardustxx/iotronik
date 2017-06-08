@@ -39,7 +39,7 @@ class ActivityItem extends Component {
         <GridTile
           title={this.props.date}
         >
-          <img src={this.state.image} style={this.imageStyle} />
+          <img alt={this.props.image} src={this.state.image} style={this.imageStyle} />
         </GridTile>
       </div>
     );

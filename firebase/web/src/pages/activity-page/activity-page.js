@@ -6,10 +6,6 @@ import './activity-page.css';
 
 class ActivityPage extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div id='activity-page'>

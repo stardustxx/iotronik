@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import {BrowserRouter, Switch, Route, Link} from 'react-router-dom'; 
+import {BrowserRouter, Switch, Route} from 'react-router-dom'; 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import * as firebase from 'firebase';

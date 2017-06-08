@@ -16,6 +16,8 @@ class IncidentItem extends Component {
     "maxWidth": "450px"
   };
 
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -25,15 +27,22 @@ class IncidentItem extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     const firebaseStorage = firebase.storage();
     firebaseStorage.refFromURL(`gs://iotroniks.appspot.com/${this.props.image}`).getDownloadURL().then(url => {
-      this.setState({
-        image: url
-      });
+      if (this._isMounted) {
+        this.setState({
+          image: url
+        });
+      }
     }).catch(error => {
       console.error("Firebase storage error code", error.code);
       console.error("Firebase storage error message", error.message);
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

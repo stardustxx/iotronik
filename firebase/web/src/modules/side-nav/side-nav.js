@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 
+import './side-nav.css';
+
 class SideNav extends Component {
 
   constructor(props) {
@@ -12,15 +14,11 @@ class SideNav extends Component {
 
   componentDidMount() {
     this.checkWindowSize();
-    window.addEventListener('resize', this.windowResizeCallback);
+    window.addEventListener('resize', this.checkWindowSize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.windowResizeCallback);
-  }
-
-  windowResizeCallback = () => {
-    this.checkWindowSize();
+    window.removeEventListener('resize', this.checkWindowSize);
   }
 
   checkWindowSize = () => {
@@ -62,7 +60,7 @@ class SideNav extends Component {
 
   render() {
     return (
-      <div>
+      <div id='side-nav'>
         <Drawer open={this.state.open}>
           <MenuItem onClick={() => {
             this.onMenuItemClicked('/');

@@ -36,7 +36,7 @@ class IncidentList extends Component {
 
   render() {
     return (
-      <div>
+      <div id="incident-list">
         <List>
           <Subheader>Incident List</Subheader>
           {

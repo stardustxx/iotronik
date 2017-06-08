@@ -8,26 +8,52 @@ import ActivityItem from './activity-item/activity-item';
 
 class ActivityList extends Component {
 
-  styles = {
-    gridList: {
-      width: 500,
-      height: 450,
-      overflowY: 'auto'
-    }
-  }
+  _isMounted = false;
 
   constructor() {
     super();
 
     this.state = {
-      "occurrenceList": []
+      "occurrenceList": [],
+      "gridListStyle": {
+        width: 500,
+        height: '100%',
+        overflowY: 'auto'
+      }
     };
   }
 
   componentDidMount() {
+    this.checkIfModile();
+    window.addEventListener('resize', this.checkIfModile);
+
     firebase.database().ref('occurrence').on('value', snapshot => {
       this.updateActivityList(snapshot.val());
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.checkIfModile);
+  }
+
+  checkIfModile = () => {
+    if (window.innerWidth < 768) {
+      this.setState({
+        "gridListStyle": {
+          width: '100%',
+          height: '100%',
+          overflowY: 'auto'
+        }
+      });
+    } else {
+      this.setState({
+        "gridListStyle": {
+          width: 500,
+          height: '100%',
+          overflowY: 'auto'
+        }
+      });
+    }
   }
 
   updateActivityList = (occurrenceData) => {
@@ -45,10 +71,10 @@ class ActivityList extends Component {
 
   render() {
     return (
-      <div>
+      <div id="activity-list">
         <GridList
           cellHeight={200}
-          style={this.styles.gridList}
+          style={this.state.gridListStyle}
         >
           <Subheader>Incident List</Subheader>
           {
