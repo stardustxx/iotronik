@@ -14,8 +14,6 @@ import com.sdust.iotroniks.ui.base.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 public class MainActivity extends BaseActivity implements MainContract.View {
 
   private static final String TAG = "MainActivity";
@@ -25,8 +23,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
   private IncidentRecyclerViewAdapter incidentRecyclerViewAdapter;
   private ArrayList<Incident> incidentList;
 
-  @BindView(R.id.main_list_incident)
-  RecyclerView listIncident;
+  private RecyclerView listIncident;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +31,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     setContentView(R.layout.activity_main);
 
     mainPresenter = new MainPresenter(new AppDataManagerHelper(getApplicationContext()), this);
+    listIncident = findViewById(R.id.main_list_incident);
     incidentList = new ArrayList<>();
 
     // Setting the list for showing incidents
@@ -72,5 +70,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
   @Override
   public void showIncidents(List<Incident> incidents) {
     Log.d(TAG, "show incidents");
+  }
+
+  @Override
+  public void showOccurrences(List<Incident> incidents) {
+    Log.d(TAG, incidents.toString());
   }
 }

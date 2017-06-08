@@ -21,7 +21,7 @@ public class IncidentRecyclerViewAdapter extends RecyclerView.Adapter<IncidentRe
   private Context context;
   private ArrayList<Incident> incidentList;
 
-  public IncidentRecyclerViewAdapter(Context context, ArrayList<Incident> incidentList) {
+  IncidentRecyclerViewAdapter(Context context, ArrayList<Incident> incidentList) {
     this.context = context;
     this.incidentList = incidentList;
   }
@@ -51,8 +51,8 @@ public class IncidentRecyclerViewAdapter extends RecyclerView.Adapter<IncidentRe
 
     IncidentViewHolder(View itemView) {
       super(itemView);
-      textDate = (TextView) itemView.findViewById(R.id.item_incident_date);
-      textIncidentTitle = (TextView) itemView.findViewById(R.id.item_incident_title);
+      textDate = itemView.findViewById(R.id.item_incident_date);
+      textIncidentTitle = itemView.findViewById(R.id.item_incident_title);
       itemView.setOnClickListener(this);
     }
 

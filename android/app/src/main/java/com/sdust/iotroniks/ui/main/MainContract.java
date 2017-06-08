@@ -16,6 +16,8 @@ interface MainContract {
 
     void showIncidents(List<Incident> incidents);
 
+    void showOccurrences(List<Incident> incidents);
+
     void showAddTasks(List<Incident> incidents);
 
   }
@@ -25,6 +27,8 @@ interface MainContract {
     void result(int requestCode, int resultCode);
 
     void loadIncidents();
+
+    void loadOccurrences();
 
   }
 

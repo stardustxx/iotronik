@@ -8,9 +8,13 @@ import java.util.Map;
 
 public class Incident {
 
-  private Date date;
   private String title;
   private Long time;
+  private String image;
+
+  public Incident() {
+
+  }
 
   public Incident(String title) {
     this.title = title;
@@ -21,17 +25,10 @@ public class Incident {
     this.time = time;
   }
 
-  public Incident(Date date, String title) {
-    this.date = date;
+  public Incident(String title, Long time, String image) {
     this.title = title;
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
+    this.time = time;
+    this.image = image;
   }
 
   public String getTitle() {
@@ -49,5 +46,13 @@ public class Incident {
 
   public Map<String, String> getTime() {
     return ServerValue.TIMESTAMP;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 }

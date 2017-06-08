@@ -1,7 +1,9 @@
-package com.sdust.iotroniks.data.prefs
+package com.sdust.iotroniks.data.prefs;
 
-interface PreferenceHelper {
+public interface PreferenceHelper {
 
-  var currentUserEmail: String
+  void setCurrentUserEmail(String email);
+
+  String getCurrentUserEmail();
 
 }
