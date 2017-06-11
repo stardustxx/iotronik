@@ -8,6 +8,11 @@ const firebase = require('firebase');
 const googleStorage = require('@google-cloud/storage');
 const Multer = require('multer');
 const cors = require('cors');
+const request = require('request');
+const fs = require('fs');
+// const net = require('net')
+// const mqttCon = require('mqtt-connection')
+// const mqttServer = new net.Server()
 
 let cameraOptions = {
   mode: 'photo',
@@ -69,13 +74,9 @@ app.post('/occurrence', multer.single('file'), (req, res) => {
   console.log('occurrence', req.body);
 
   let file = req.file;
+  console.log("occurrence", file);
   if (file) {
     uploadImageToStorage(file).then((success) => {
-      // const dateNow = Date.now();
-      // firebaseDatabase.ref('occurrence').push().set({
-      //   time: dateNow,
-      //   image: success
-      // });
       res.status(200).send({
         status: 'success'
       });
@@ -100,6 +101,40 @@ app.listen(3000, () => {
     }
   }, 10000);
   firebaseDatabase = firebase.database();
+});
+
+/**
+ * Requesting to retrieve image from corresponding NodeMCU
+ */
+app.post('/capture', (req, res) => {
+  if (req.headers.hasOwnProperty("ip")) {
+    const deviceIp = req.headers.ip;
+
+    requestPicture(deviceIp, () => {
+      fs.readFile(`file_${deviceIp}.jpg`, (err, data) => {
+        if (err) {
+          console.error("File Read Error", error);
+          return;
+        }
+
+        const file = {
+          "fieldname": "file",
+          "originalname": "file.jpg",
+          "encoding": "7bit",
+          "mimetype": 'image/jpeg',
+          "buffer": data
+        };
+        
+        uploadImageToStorage(file).then((success) => {
+          console.log("Upload successfully");
+        }).catch((error) => {
+          console.error(error);
+        });
+      });
+    });
+
+  }
+  res.status(200).send("POST TEST!!");
 });
 
 /**
@@ -164,6 +199,18 @@ const uploadImageToStorage = (file) => {
   return prom;
 }
 
+/**
+ * Requesting the picture from specified IP address
+ * @param {String}   deviceIp IP address of the NodeMCU
+ * @param {Function} callback A callback function that will run when file is generated
+ */
+const requestPicture = (deviceIp, callback) => {
+  console.log(`${deviceIp}/capture`);
+  request(`http://${deviceIp}/capture`)
+    .pipe(fs.createWriteStream(`file_${deviceIp}.jpg`))
+    .on('finish', callback);
+}
+
 io.on('connection', (socket) => {
   console.log('A device is connected');
 });
@@ -171,3 +218,42 @@ io.on('connection', (socket) => {
 camera.on('start', () => {
   console.log('Camera started');
 });
+
+// mqttServer.on('connection', function (stream) {
+//   let client = mqttCon(stream);
+
+//   // client connected 
+//   client.on('connect', function (packet) {
+//     // acknowledge the connect packet 
+//     client.connack({ returnCode: 0 });
+//   })
+
+//   // client published 
+//   client.on('publish', function (packet) {
+//     // send a puback with messageId (for QoS > 0) 
+//     client.puback({ messageId: packet.messageId })
+//   })
+
+//   // client pinged 
+//   client.on('pingreq', function () {
+//     // send a pingresp 
+//     client.pingresp()
+//   });
+
+//   // client subscribed 
+//   client.on('subscribe', function (packet) {
+//     // send a suback with messageId and granted QoS level 
+//     client.suback({ granted: [packet.qos], messageId: packet.messageId })
+//   })
+
+//   // timeout idle streams after 5 minutes 
+//   stream.setTimeout(1000 * 60 * 5)
+
+//   // connection error handling 
+//   client.on('close', function () { client.destroy() })
+//   client.on('error', function () { client.destroy() })
+//   client.on('disconnect', function () { client.destroy() })
+
+//   // stream timeout 
+//   stream.on('timeout', function () { client.destroy(); })
+// });
