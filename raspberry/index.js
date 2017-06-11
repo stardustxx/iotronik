@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
 const format = require('util').format;
 const RaspiCam = require('raspicam');
 const firebase = require('firebase');
@@ -210,10 +208,6 @@ const requestPicture = (deviceIp, callback) => {
     .pipe(fs.createWriteStream(`file_${deviceIp}.jpg`))
     .on('finish', callback);
 }
-
-io.on('connection', (socket) => {
-  console.log('A device is connected');
-});
 
 camera.on('start', () => {
   console.log('Camera started');
