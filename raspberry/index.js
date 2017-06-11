@@ -109,7 +109,7 @@ app.post('/capture', (req, res) => {
     const deviceIp = req.headers.ip;
 
     requestPicture(deviceIp, () => {
-      fs.readFile(`file_${deviceIp}.jpg`, (err, data) => {
+      fs.readFile(`asset/file_${deviceIp}.jpg`, (err, data) => {
         if (err) {
           console.error("File Read Error", error);
           return;
@@ -205,7 +205,7 @@ const uploadImageToStorage = (file) => {
 const requestPicture = (deviceIp, callback) => {
   console.log(`${deviceIp}/capture`);
   request(`http://${deviceIp}/capture`)
-    .pipe(fs.createWriteStream(`file_${deviceIp}.jpg`))
+    .pipe(fs.createWriteStream(`asset/file_${deviceIp}.jpg`))
     .on('finish', callback);
 }
 
