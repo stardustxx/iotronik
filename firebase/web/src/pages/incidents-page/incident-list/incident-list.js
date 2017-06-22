@@ -26,7 +26,7 @@ class IncidentList extends Component {
     for (let refKey in occurrenceData) {
       let obj = occurrenceData[refKey];
       obj["refKey"] = refKey;
-      obj.time = Date(obj.time);
+      obj.time = (new Date(obj.time)).toString();
       occurrenceList.push(obj);
     }
     this.setState({

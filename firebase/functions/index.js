@@ -99,10 +99,12 @@ exports.addOccurrence = functions.storage.object().onChange(event => {
 function sendNotification() {
   const payload = {
     data: {
-      "title": "Iotronik"
+      "title": "Iotronik",
+      "body": "You have a new image"
     },
     "notification": {
-      "title": "Iotroink"
+      "title": "Iotroink",
+      "body": "You have a new image"
     }
   }
   admin.messaging().sendToTopic(topicPathNewIncident, payload).then((response) => {

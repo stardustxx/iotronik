@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import * as firebase from 'firebase';
 import Constants from './Constants';
+import Helpers from './helpers';
 
 // Importing pages
 import IncidentsPage from './pages/incidents-page/incidents-page';
@@ -69,6 +70,7 @@ class App extends Component {
 
     firebaseMessaging.onMessage(payload => {
       console.log("Message received:.", payload);
+      Helpers.showNotification(payload.data.body);
     });
   }
 
@@ -92,6 +94,15 @@ class App extends Component {
     });
   }
 
+  loadTestUpload = () => {
+    if (process.env.NODE_ENV !== 'production') {
+      return (
+        <TestUpload />
+      );
+    }
+    return null;
+  }
+
   render() {
     return (
       <div>
@@ -101,7 +112,9 @@ class App extends Component {
               title='IOTronik'
               iconStyleLeft={{display: 'none'}}
             />
-            <TestUpload />
+            {
+              this.loadTestUpload()
+            }
             <BrowserRouter>
               <Switch>
                 <Route exact path='/' component={IncidentsPage}/>

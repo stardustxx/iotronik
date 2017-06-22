@@ -55,7 +55,7 @@ class BottomNav extends Component {
           this.goToRoute('/activity');
           break;
         case 2:
-          this.goToRoute('/');
+          this.goToRoute('/about');
           break;
         default:
           this.goToRoute('/');
@@ -83,13 +83,15 @@ class BottomNav extends Component {
               icon={this.recentsIcon}
               onTouchTap={() => this.select(0)}
             />
+            {
+              // <BottomNavigationItem
+              //   label="Activities"
+              //   icon={this.favoritesIcon}
+              //   onTouchTap={() => this.select(1)}
+              // />
+            }
             <BottomNavigationItem
-              label="Activities"
-              icon={this.favoritesIcon}
-              onTouchTap={() => this.select(1)}
-            />
-            <BottomNavigationItem
-              label="Nearby"
+              label="About"
               icon={this.nearbyIcon}
               onTouchTap={() => this.select(2)}
             />
