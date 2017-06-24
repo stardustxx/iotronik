@@ -86,7 +86,8 @@ app.post('/occurrence', multer.single('file'), (req, res) => {
 
 app.listen(3000, () => {
   console.log('App listening to port 3000');
-  // camera.start();
+  // Fisheye will take a snapshot
+  camera.start();
 
   // Initializes Firebase
   firebase.initializeApp(firebaseConfig);
@@ -109,28 +110,8 @@ app.post('/capture', (req, res) => {
     const deviceIp = req.headers.ip;
 
     requestPicture(deviceIp, () => {
-      fs.readFile(`asset/file_${deviceIp}.jpg`, (err, data) => {
-        if (err) {
-          console.error("File Read Error", error);
-          return;
-        }
-
-        const file = {
-          "fieldname": "file",
-          "originalname": "file.jpg",
-          "encoding": "7bit",
-          "mimetype": 'image/jpeg',
-          "buffer": data
-        };
-        
-        uploadImageToStorage(file).then((success) => {
-          console.log("Upload successfully");
-        }).catch((error) => {
-          console.error(error);
-        });
-      });
+      readFileUpload(`asset/file_${deviceIp}.jpg`);
     });
-
   }
   res.status(200).send("POST TEST!!");
 });
@@ -209,8 +190,37 @@ const requestPicture = (deviceIp, callback) => {
     .on('finish', callback);
 }
 
+const readFileUpload = (filePath) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.error("File Read Error", error);
+      return;
+    }
+
+    const file = {
+      "fieldname": "file",
+      "originalname": "file.jpg",
+      "encoding": "7bit",
+      "mimetype": 'image/jpeg',
+      "buffer": data
+    };
+
+    uploadImageToStorage(file).then((success) => {
+      console.log("Upload successfully");
+    }).catch((error) => {
+      console.error(error);
+    });
+  });
+}
+
+// Listen for the 'start' event triggered when the start method has been successfully initiated
 camera.on('start', () => {
   console.log('Camera started');
+});
+
+// listen for the "read" event triggered when each new photo/video is saved
+camera.on("read", function(err, timestamp, filename){ 
+	readFileUpload(cameraOptions.output);
 });
 
 // mqttServer.on('connection', function (stream) {
