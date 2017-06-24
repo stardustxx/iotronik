@@ -1,0 +1,15 @@
+#contact-page {
+  display: flex;
+  justify-content: center;
+}
+
+#contact-page .logo-image {
+  width: 100%;
+  height: 100%;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+#contact-page .main-content h2 {
+  text-align: center;
+}

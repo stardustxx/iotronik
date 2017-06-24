@@ -35,8 +35,8 @@ class BottomNav extends Component {
       case '/activity':
         this.selectIndex(1);
         break;
-      case '/something':
-        this.selectIndex(2);
+      case '/contact':
+        this.selectIndex(1);
         break;
       default:
         this.selectIndex(0);
@@ -52,10 +52,10 @@ class BottomNav extends Component {
           this.goToRoute('/');
           break;
         case 1:
-          this.goToRoute('/activity');
+          this.goToRoute('/contact');
           break;
         case 2:
-          this.goToRoute('/about');
+          this.goToRoute('/activity');
           break;
         default:
           this.goToRoute('/');
@@ -91,9 +91,9 @@ class BottomNav extends Component {
               // />
             }
             <BottomNavigationItem
-              label="About"
+              label="Contact"
               icon={this.nearbyIcon}
-              onTouchTap={() => this.select(2)}
+              onTouchTap={() => this.select(1)}
             />
           </BottomNavigation>
         </Paper>

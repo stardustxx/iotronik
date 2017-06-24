@@ -1,4 +1,19 @@
+import * as firebase from 'firebase';
+
 export default class Helpers {
+  
+  static initializeFirebase() {
+    const config = {
+      apiKey: "AIzaSyAjnBilwCxY6qguPOn2poyRgcKRQwwFprw",
+      authDomain: "iotroniks.firebaseapp.com",
+      databaseURL: "https://iotroniks.firebaseio.com",
+      projectId: "iotroniks",
+      storageBucket: "iotroniks.appspot.com",
+      messagingSenderId: "512273627061"
+    };
+    firebase.initializeApp(config);
+  }
+
   static showNotification(message) {
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
@@ -19,5 +34,10 @@ export default class Helpers {
 
     // At last, if the user has denied notifications, and you
     // want to be respectful there is no need to bother them any more.
+  }
+
+  static isEmail(email) {
+    const re = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+    return re.test(email);
   }
 }

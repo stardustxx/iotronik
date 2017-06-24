@@ -10,6 +10,7 @@ import Helpers from './helpers';
 // Importing pages
 import IncidentsPage from './pages/incidents-page/incidents-page';
 import ActivityPage from './pages/activity-page/activity-page';
+import ContactPage from './pages/contact-page/contact-page';
 
 // Importing modules
 import TestUpload from './modules/test-upload/test-upload';
@@ -28,15 +29,7 @@ class App extends Component {
     injectTapEventPlugin();
 
     // Initialize Firebase
-    this.config = {
-      apiKey: "AIzaSyAjnBilwCxY6qguPOn2poyRgcKRQwwFprw",
-      authDomain: "iotroniks.firebaseapp.com",
-      databaseURL: "https://iotroniks.firebaseio.com",
-      projectId: "iotroniks",
-      storageBucket: "iotroniks.appspot.com",
-      messagingSenderId: "512273627061"
-    };
-    firebase.initializeApp(this.config);
+    Helpers.initializeFirebase();
   }
 
   componentDidMount() {
@@ -53,25 +46,27 @@ class App extends Component {
   }
 
   setUpFirebaseMessaging = () => {
-    const firebaseMessaging = firebase.messaging();
-    firebaseMessaging
-      .requestPermission()
-      .then(() => {
-        console.log('Notification permission granted.');
-        return firebaseMessaging.getToken();
-      })
-      .then((token) => {
-        console.log("Token received");
-        this.subscribeToTopic(token, 'incident-new');
-      })
-      .catch(function (err) {
-        console.error("Firebase Message Error.", err);
-      });
+    if ("Notification" in window) {
+      const firebaseMessaging = firebase.messaging();
+      firebaseMessaging
+        .requestPermission()
+        .then(() => {
+          console.log('Notification permission granted.');
+          return firebaseMessaging.getToken();
+        })
+        .then((token) => {
+          console.log("Token received");
+          this.subscribeToTopic(token, 'incident-new');
+        })
+        .catch(function (err) {
+          console.error("Firebase Message Error.", err);
+        });
 
-    firebaseMessaging.onMessage(payload => {
-      console.log("Message received:.", payload);
-      Helpers.showNotification(payload.data.body);
-    });
+      firebaseMessaging.onMessage(payload => {
+        console.log("Message received:.", payload);
+        Helpers.showNotification(payload.data.body);
+      });
+    }
   }
 
   subscribeToTopic = (token, topicName) => {
@@ -119,6 +114,7 @@ class App extends Component {
               <Switch>
                 <Route exact path='/' component={IncidentsPage}/>
                 <Route exact path='/activity' component={ActivityPage}/>
+                <Route exact path='/contact' component={ContactPage}/>
               </Switch>
             </BrowserRouter>
           </div>

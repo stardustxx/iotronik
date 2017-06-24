@@ -66,8 +66,8 @@ class SideNav extends Component {
             this.onMenuItemClicked('/');
           }}>Incidents</MenuItem>
           <MenuItem onClick={() => {
-            this.onMenuItemClicked('/about');
-          }}>About</MenuItem>
+            this.onMenuItemClicked('/contact');
+          }}>Contact</MenuItem>
           {
             // <MenuItem onClick={() => {
             //   this.onMenuItemClicked('/activity');
