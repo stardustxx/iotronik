@@ -13,12 +13,27 @@ class SideNav extends Component {
   }
 
   componentDidMount() {
-    this.checkWindowSize();
-    window.addEventListener('resize', this.checkWindowSize);
+    if ("open" in this.props) {
+      this.setState({
+        open: this.props.open
+      });
+    } else {
+      this.checkWindowSize();
+      window.addEventListener('resize', this.checkWindowSize);
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.checkWindowSize);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("side-nav updating", nextProps);
+    if ("open" in nextProps) {
+      this.setState({
+        open: nextProps.open
+      });
+    }
   }
 
   checkWindowSize = () => {

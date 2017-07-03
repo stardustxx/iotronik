@@ -7,10 +7,11 @@ import * as firebase from 'firebase';
 import IncidentItem from './incident-item/incident-item';
 
 class IncidentList extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
+      "showSubHeader": "showSubHeader" in this.props ? this.props.showSubHeader : true,
       "occurrenceList": []
     };
   }
@@ -38,7 +39,9 @@ class IncidentList extends Component {
     return (
       <div id="incident-list">
         <List>
-          <Subheader>Incident List</Subheader>
+          {
+            this.state.showSubHeader ? <Subheader>Incident List</Subheader> : null
+          }
           {
             this.state.occurrenceList.reverse().map((value, index, array) => {
               return (

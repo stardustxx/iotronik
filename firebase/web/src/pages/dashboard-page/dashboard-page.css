@@ -1,0 +1,10 @@
+#dashboard-page #container {
+  padding: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+#dashboard-page #container .item {
+  flex-grow: 2;
+}

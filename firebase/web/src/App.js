@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {BrowserRouter, Switch, Route} from 'react-router-dom'; 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
 import * as firebase from 'firebase';
 import Constants from './Constants';
 import Helpers from './helpers';
 
 // Importing pages
+import DashboardPage from './pages/dashboard-page/dashboard-page';
 import IncidentsPage from './pages/incidents-page/incidents-page';
 import ActivityPage from './pages/activity-page/activity-page';
 import ContactPage from './pages/contact-page/contact-page';
@@ -90,11 +90,11 @@ class App extends Component {
   }
 
   loadTestUpload = () => {
-    if (process.env.NODE_ENV !== 'production') {
-      return (
-        <TestUpload />
-      );
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   return (
+    //     <TestUpload />
+    //   );
+    // }
     return null;
   }
 
@@ -103,10 +103,6 @@ class App extends Component {
       <div>
         <MuiThemeProvider>
           <div id="main-body">
-            <AppBar 
-              title='IOTronik'
-              iconStyleLeft={{display: 'none'}}
-            />
             {
               this.loadTestUpload()
             }
@@ -115,6 +111,7 @@ class App extends Component {
                 <Route exact path='/' component={IncidentsPage}/>
                 <Route exact path='/activity' component={ActivityPage}/>
                 <Route exact path='/contact' component={ContactPage}/>
+                <Route exact path='/dashboard' component={DashboardPage}/>
               </Switch>
             </BrowserRouter>
           </div>
